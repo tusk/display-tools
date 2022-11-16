@@ -1,0 +1,5 @@
+#!/bin/bash
+
+BINPATH=`dirname $0`
+BASENAME=`basename $0`
+PYTHONPATH=`dirname $BINPATH` python "${BINPATH}/../display_tools/cli/${BASENAME}.py" $@
