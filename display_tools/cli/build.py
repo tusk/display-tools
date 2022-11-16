@@ -1,6 +1,5 @@
 import click
-from display_tools.font_builder import Builder
-from display_tools.matrix import Matrix
+from display_tools.font_builder import Builder, Matrix
 
 @click.command()
 @click.argument('file')
