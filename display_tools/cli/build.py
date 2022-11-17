@@ -5,18 +5,19 @@ from display_tools.font_builder import Builder, Matrix
 @click.argument('file')
 @click.argument('size')
 @click.option('--base', default=7)
+@click.option('--v-adjust', default=0)
 @click.option('--preview', is_flag=True)
 @click.option('--scale', default=1)
 @click.option('--font-class', default=None)
-def build(file, size, base, preview, scale, font_class):
+def build(file, size, base, v_adjust, preview, scale, font_class):
     
-    builder = Builder(file, int(size), base)
+    builder = Builder(file, int(size), base, v_adjust)
     
     if preview:
         from PIL import Image, ImageColor
 
         display = Matrix()
-        text = builder.render('abcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n1234567890\n?!<>{}[],.=+-_')
+        text = builder.render('ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n1234567890\n?!<>{}[],.=+-_')
         display = display.over(text, x=10, y=10).scale(scale)
         im = Image.new('RGB', (display.width + 10*scale, display.height + 10*scale))
         white = ImageColor.getcolor('white', 'RGB')

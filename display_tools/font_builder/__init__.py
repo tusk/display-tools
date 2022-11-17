@@ -6,25 +6,25 @@ class Builder(Font):
 
     chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!?;:,.[]{}()@#$€£&+=-_*/\\|<>~^`"\'#%'
 
-    def __init__(self, file, size, base=7) -> None:
+    def __init__(self, file, size, base=7, v_adjust=0) -> None:
         face = freetype.Face(file)
         face.set_pixel_sizes(0, size)
         super().__init__([
             base,
-            dict(self.get_chars(face))
+            dict(self.get_chars(face, v_adjust))
         ])
 
     def __repr__(self):
         return pprint.PrettyPrinter(indent=4, depth=3, width=2048, compact=True).pformat(self.data)
 
     @classmethod
-    def get_chars(cls, face):
+    def get_chars(cls, face, v_adjust=0):
         for character in cls.chars:
             face.load_char(character, freetype.FT_LOAD_RENDER | freetype.FT_LOAD_TARGET_MONO)
             bitmap = face.glyph.bitmap
             sprite = cls.build_matrix(bitmap)
             table = Table.from_matrix(sprite, 6)
-            yield character, (sprite.width, face.glyph.bitmap_top, *table.data)
+            yield character, (sprite.width, face.glyph.bitmap_top + v_adjust, *table.data)
 
     @staticmethod
     def build_matrix(bitmap):
